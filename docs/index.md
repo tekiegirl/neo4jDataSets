@@ -1,3 +1,7 @@
+layout: page
+title: "Neo4j Data Sets"
+permalink: /
+
 # Neo4j Data Sets
 
 Welcome to a selection of data sets and related cypher code for use with Neo4j, a graph database. These data sets and cypher queries can be used with a local, hosted or sandbox version of Neo4j.
