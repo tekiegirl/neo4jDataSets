@@ -1,5 +1,5 @@
-// Past the below code into a Neo4j browser to load the data in Song.csv
-// Load songs from the Songs.csv file and create Song nodes for each
+// Paste the below code into a Neo4j browser to load the data in Song.csv
+// Load songs from the Song.csv file and create Song nodes for each
 LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/main/MusicGraph/Song.csv' AS row
 MERGE (s:Song {songId: toInteger(row.Id), title: row.Title, length: row.Length})
 RETURN s
