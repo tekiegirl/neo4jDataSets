@@ -1,0 +1,26 @@
+// The following are example queries to run against the MusicGraph database, once all the csv files in this folder have been imported using the Cypher scripts in the other txt files
+
+// Example Cypher Queries for the Music Graph
+
+// a. Find albums of a liked artist or group
+MATCH (p:Person)-[l:LIKES]->(ag)-->(a:Album)
+RETURN p,ag,a
+
+// b. What albums is a liked 8+ artist connected to?
+MATCH (p:Person)-[l:LIKES]->(ag)-->(a:Album)
+WHERE l.score >=8
+RETURN p.name,l.score,ag.name,a.title
+
+// c. What other unliked artists might a person like?
+MATCH (p:Person)-[l:LIKES]->(ag)-->(a:Album)<--(ag2)
+WHERE l.score >=8 AND NOT (p)-[:LIKES]->(ag2)
+RETURN p.name,ag.name AS Liked_Artist,a.title AS Via, ag2.name AS Suggested_Artist
+
+// Useful general scripts
+
+// RETURN ALL - return the whole graph!
+MATCH (n) RETURN (n)
+
+// DELETE ALL - use this to start again!
+MATCH (n)
+DETACH DELETE n
