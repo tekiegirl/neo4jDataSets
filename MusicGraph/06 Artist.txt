@@ -1,0 +1,8 @@
+// Paste the below code into a Neo4j browser to set any artists that are groups
+// Add label of Group to any artists that are marked as being groups and remove that property
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/main/MusicGraph/Person.csv' AS row
+MERGE (p:Person {personId: toInteger(row.Id), name: row.Name})
+WITH p,row
+MATCH (a:Artist {artistId: toInteger(row.Likes)})
+MERGE (p)-[l:LIKES {score: toInteger(row.Score)}]->(a)
+RETURN p,l,a
