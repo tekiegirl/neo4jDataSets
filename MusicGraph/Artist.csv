@@ -1,3 +1,7 @@
 ﻿Id,Name,Features,Released,Year,Group
 1,Queen,,1,1982,TRUE
-2,David Bowie,1,,0,FALSE
+1,Queen,,2,1991,TRUE
+2,David Bowie,1,,,FALSE
+2,David Bowie,,3,1972,FALSE
+3,Journey,,4,1980,TRUE
+3,Journey,,5,1981,TRUE
