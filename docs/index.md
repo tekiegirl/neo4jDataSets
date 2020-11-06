@@ -4,6 +4,10 @@ Welcome to a selection of data sets and related cypher code for use with Neo4j, 
 
 For more information on Neo4j see [Getting started with Neo4j](https://neo4j.com/try-neo4j/)
 
+## The data sets
+- [Music Graph](https://github.com/jacquibo/neo4jDataSets/tree/main/MusicGraph) - a graph showing people who like an artist or group
+- More to come!
+
 ## Using the data sets
 
 The first thing you will need to do is have a Neo4j database instance to work on. The simplest way to do this is to go to the [Neo4j Sandbox](https://neo4j.com/sandbox/?utm_source=tekiegirl) where you can try Neo4j for free online, with no set-up required. Otherwise please refer to [Getting started with Neo4j](https://neo4j.com/try-neo4j/) for other ways of getting started with a Neo4j database.
