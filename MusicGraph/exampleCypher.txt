@@ -26,6 +26,17 @@ MATCH (p:Person)-[l:LIKES]->(ag)<-[l2:LIKES]-(p2:Person)
 WHERE l.score >=5 AND l2.score >=5 AND NOT (p)-[:FRIENDS_WITH]-(p2) AND NOT p.personId = p2.personId
 RETURN p.name,ag.name AS Via, p2.name AS Suggested_Friend
 
+// f. Artist Recommendations
+MATCH (p: Person)-[l:LIKES]->(a:Artist)<-[l2:LIKES]-(p2:Person)-[l3:LIKES]->(a2)
+WHERE l.score >5 AND l2.score >5 AND l3.score >5 AND NOT (p)-[:LIKES]->(a2)
+RETURN p.name,a2.name
+
+// g. Ranked  Artist Recommendations
+MATCH (p: Person)-[l:LIKES]->(a:Artist)<-[l2:LIKES]-(p2:Person)-[l3:LIKES]->(a2)
+WHERE NOT (p)-[:LIKES]->(a2)
+RETURN p.name,a2.name,l.score + l2.score +l3.score AS Score
+ORDER BY Score DESC
+
 // Useful general scripts
 
 // RETURN ALL - return the whole graph!
