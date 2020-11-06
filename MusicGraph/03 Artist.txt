@@ -1,0 +1,8 @@
+// Paste the below code into a Neo4j browser to load the data in Artist.csv with released relationships
+// Load artists from the Artist.csv file, create Artist nodes for each, and create released relationships with albums
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/main/MusicGraph/Artist.csv' AS row WITH row WHERE row.Released IS NOT NULL
+MERGE (ar:Artist {artistId: toInteger(row.Id), name: row.Name, group: toBoolean(row.Group)})
+WITH ar, row
+MATCH (alb:Album {albumId: toInteger(row.Released)})
+MERGE (ar)-[r:RELEASED {year: row.Year}]->(alb)
+RETURN ar,r,alb
