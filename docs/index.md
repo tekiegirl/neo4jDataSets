@@ -1,6 +1,5 @@
 layout: page
 title: "Neo4j Data Sets"
-menus: header
 permalink: /
 
 # Neo4j Data Sets
