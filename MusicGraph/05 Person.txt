@@ -1,0 +1,8 @@
+// Paste the below code into a Neo4j browser to load the data in Person.csv
+// Load people from the Person.csv file, create Person nodes for each, and create likes relationships with artists/groups
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/main/MusicGraph/Person.csv' AS row
+MERGE (p:Person {personId: toInteger(row.Id), name: row.Name})
+WITH p,row
+MATCH (a:Artist {artistId: toInteger(row.Likes)})
+MERGE (p)-[l:LIKES {score: toInteger(row.Score)}]->(a)
+RETURN p,l,a
