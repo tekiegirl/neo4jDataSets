@@ -1,0 +1,9 @@
+// Paste the below code into a Neo4j browser to load the data in Album.csv
+// Load albums from the Album.csv file, create Album nodes for each, and create relationships with songs
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/main/MusicGraph/Album.csv' AS row
+MERGE (a:Album {albumId: toInteger(row.Id), title: row.Title, format: row.Format})
+WITH a, row
+MATCH (s:Song {songId: toInteger(row.Includes)})
+WITH a, row, s
+MERGE (a)-[i:INCLUDES {side: toInteger(row.Side), track: toInteger(row.Track)}]->(s)
+RETURN a,i,s
