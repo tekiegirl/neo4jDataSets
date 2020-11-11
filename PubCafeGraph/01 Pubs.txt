@@ -1,0 +1,32 @@
+// 01. Load Pubs
+LOAD CSV WITH HEADERS FROM 'https://raw.githubusercontent.com/jacquibo/neo4jDataSets/pub-cafe/PubCafeGraph/Pubs.csv' AS row
+MERGE (p:Pub {pubId: toInteger(row.Id), name: row.Name, rating: toFloat(row.Rating), address: row.Address, postcode: row.Postcode, phone: row.Phone, description: row.Desc})
+SET p.pricing = toInteger(row.Pricing), p.website = row.Website, p.menu = row.Menu, p.booking = row.Booking
+WITH p, row, (CASE row.Status WHEN NULL THEN 'None' ELSE row.Status END) AS status
+MERGE (st:Status {name: status})
+MERGE (p)-[:HAS_STATUS]->(st)
+WITH p, st, row, (CASE row.Service WHEN NULL THEN 'None' ELSE row.Service END) AS services
+UNWIND split(services, ';') AS service
+MERGE (s:Service {name: service})
+MERGE (p)-[:HAS_SERVICE]->(s)
+WITH p, st, s, row, (CASE row.Offerings WHEN NULL THEN 'None' ELSE row.Offerings END) AS offerings
+UNWIND split(offerings, ';') AS offering
+MERGE (o:Offering {name: offering})
+MERGE (p)-[:HAS_OFFERING]->(o)
+WITH p, st, s, o, row, (CASE row.Atmosphere WHEN NULL THEN 'None' ELSE row.Atmosphere END) AS atmospheres
+UNWIND split(atmospheres, ';') AS atmos
+MERGE (a:Atmosphere {name: atmos})
+MERGE (p)-[:HAS_ATMOSPHERE]->(a)
+WITH p, st, s, o, a, row, (CASE row.Crowd WHEN NULL THEN 'None' ELSE row.Crowd END) AS crowds
+UNWIND split(crowds, ';') AS crowd
+MERGE (c:Crowd {name: crowd})
+MERGE (p)-[:HAS_CROWD]->(c)
+WITH p, st, s, o, a, c, row, (CASE row.Payments WHEN NULL THEN 'None' ELSE row.Payments END) AS payments
+UNWIND split(payments, ';') AS payment
+MERGE (pm:PaymentMethod {name: payment})
+MERGE (p)-[:HAS_PAYMENT_METHOD]->(pm)
+WITH p, st, s, o, a, c, row, (CASE row.Amenities WHEN NULL THEN 'None' ELSE row.Amenities END) AS amenities
+UNWIND split(amenities, ';') AS amenity
+MERGE (am:Amenity {name: amenity})
+MERGE (p)-[:HAS_AMENITY]->(am)
+RETURN p, st, s, o, a, c, am
