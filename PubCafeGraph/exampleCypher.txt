@@ -2,7 +2,20 @@
 
 // Example Cypher Queries for the PubCafe Graph
 
-// a. 
+// a. Where is good for families?
+MATCH (l)-[:HAS_CROWD]->(c:Crowd {name: 'Family-friendly'})
+RETURN l AS Locations
+
+// b. Where can I get lunch?
+MATCH (l)-[:HAS_OFFERING]->(c:Offering {name: 'Lunch'})
+RETURN l AS Locations
+
+// c. Where has a rating of more than 4.3 and is not closed? Order by rating, highest first
+MATCH (l)-[:HAS_STATUS]->(s:Status)
+WHERE l.rating > 4.3 AND NOT toLower(s.name) CONTAINS toLower('closed')
+RETURN l.name, l.rating
+ORDER BY l.rating DESC
+
 
 // Useful general scripts
 
