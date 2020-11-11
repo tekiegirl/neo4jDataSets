@@ -16,6 +16,22 @@ WHERE l.rating > 4.3 AND NOT toLower(s.name) CONTAINS toLower('closed')
 RETURN l.name, l.rating
 ORDER BY l.rating DESC
 
+// d. Which locations have booking details?
+MATCH (l)
+WHERE l.booking IS NOT NULL
+RETURN l AS Locations
+
+// e. Which locations on the High Street are wheelchair accessible?
+MATCH (l)-[:HAS_SERVICE]->(:Service {name: 'Wheelchair Accessible'})
+WHERE toLower(l.address) CONTAINS toLower('high st')
+RETURN l
+
+// f. Where cam I get gin and take the family?
+MATCH (l)-[:HAS_OFFERING]->(:Offering {name: 'Gin'})
+WHERE (l)-[:HAS_CROWD]->(:Crowd {name: 'Family-friendly'})
+OR (l)-[:HAS_AMENITY]->(:Amenity {name: 'Good for kids'})
+RETURN l
+
 
 // Useful general scripts
 
