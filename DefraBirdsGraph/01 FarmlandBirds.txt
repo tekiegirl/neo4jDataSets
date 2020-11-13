@@ -1,0 +1,54 @@
+// 01. Load Farmland Bird data
+LOAD CSV WITH HEADERS FROM 'http://data.defra.gov.uk/Wildlife/farmland_bird_species_trends_England_1970_to_2014_rev.csv' AS row
+MERGE (:Type {name: row.`Farmland birds`})
+WITH row
+MATCH (t:Type {name: row.`Farmland birds`})
+MERGE (b:Bird:Farmland {species: row.Species})-[:OF_TYPE]->(t)
+WITH b, row
+MERGE (:Year {year: 2014})
+MERGE (:Year {year: 1970})
+WITH b, row
+MATCH (yt:Year {year: 2014}), (yf:Year {year: 1970})
+MERGE (:Change {type: 'Long Term Percentage'})
+WITH b, yt, yf ,row
+MATCH (ch:Change {type: 'Long Term Percentage'})
+MERGE (yt)<-[:TO]-(ch)-[:FROM]->(yf)
+WITH b, ch, yt, yf, row
+MERGE (b)-[:HAS_CHANGE {percentage: toInteger(row.`Long term percentage change (1970 - 2014)`)}]->(ch)
+WITH b, yt, yf, row
+MERGE (:Change {type: 'Long Term Annual Percentage'})
+WITH b, yt, yf, row
+MATCH (ch:Change {type: 'Long Term Annual Percentage'})
+MERGE (yt)<-[:TO]-(ch)-[:FROM]->(yf)
+WITH b, ch, yt, row
+MERGE (b)-[:HAS_CHANGE {percentage: toInteger(row.`Long term Annual percentage change (1970 - 2014)`)}]->(ch)
+WITH b, yt, row
+MERGE (:Trend {name: row.`Long term Trend (1970 -2014)`})
+WITH b, yt, row
+MATCH (tr:Trend {name: row.`Long term Trend (1970 -2014)`})
+MERGE (b)-[:HAS_LONG_TERM_TREND]->(tr)
+WITH b, yt, row
+MERGE (:Year {year: 2009})
+WITH b, yt, row
+MATCH (yf:Year {year: 2009})
+MERGE (:Change {type: 'Short Term Percentage'})
+WITH b, yt, yf, row
+MATCH (ch:Change {type: 'Short Term Percentage'})
+MERGE (yt)<-[:TO]-(ch)-[:FROM]->(yf)
+WITH b, ch, yt, yf, row
+MERGE (b)-[:HAS_CHANGE {percentage: toInteger(row.`Short term percentage change (2009 - 2014)`)}]->(ch)
+WITH b, yt, yf, row
+MERGE (:Change {type: 'Short Term Annual Percentage'})
+WITH b, yt, yf, row
+MATCH (ch:Change {type: 'Short Term Annual Percentage'})
+MERGE (yt)<-[:TO]-(ch)-[:FROM]->(yf)
+WITH b, ch, row
+MERGE (b)-[:HAS_CHANGE {percentage: toInteger(row.`Short term Annual percentage change (2009 - 2014)`)}]->(ch)
+WITH b, row
+MERGE (:Trend {name: row.`Short term Trend (2009 - 2014)`})
+WITH b, row
+MATCH (tr:Trend {name: row.`Short term Trend (2009 - 2014)`})
+MERGE (b)-[:HAS_SHORT_TERM_TREND]->(tr)
+WITH b
+MATCH (n)
+RETURN n
