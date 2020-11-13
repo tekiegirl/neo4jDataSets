@@ -1,0 +1,15 @@
+// The following are example queries to run against the DefraBirdsGraph database, once all the csv files in this folder have been imported using the Cypher scripts in the other txt files
+
+// Example Cypher Queries for the Defra Birds Graph
+
+// a.
+
+
+// Useful general scripts
+
+// RETURN ALL - return the whole graph!
+MATCH (n) RETURN n
+
+// DELETE ALL - use this to start again!
+MATCH (n)
+DETACH DELETE n
