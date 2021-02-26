@@ -18,7 +18,7 @@ RETURN p.name,ag.name AS Liked_Artist,a.title AS Via, ag2.name AS Suggested_Arti
 
 // d. Friend suggestions via album (if we wanted to start allowing people to friend each other we could include a new FRIENDS_WITH relationship)
 MATCH (p:Person)-[l:LIKES]->(ag)-->(a:Album)<--(ag2)<-[l2:LIKES]-(p2:Person)
-WHERE l.score >=5 AND l2.score >=5 AND NOT (p)-[:FRIENDS_WITH]-(p2) AND NOT p.group = p2.personId
+WHERE l.score >=5 AND l2.score >=5 AND NOT (p)-[:FRIENDS_WITH]-(p2) AND NOT p.personId = p2.personId
 RETURN p.name,a.title AS Via, p2.name AS Suggested_Friend
 
 // e. Friend suggestions via artist (if we wanted to start allowing people to friend each other we could include a new FRIENDS_WITH relationship)
